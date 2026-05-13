@@ -13,7 +13,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PATH=/opt/venv/bin:/usr/local/bin:$PATH
 
 # Tiny static uv binary pulled from its official image.
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /usr/local/bin/
+# Pinned for reproducibility — bump intentionally.
+COPY --from=ghcr.io/astral-sh/uv:0.11.14 /uv /uvx /usr/local/bin/
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends ca-certificates git \
