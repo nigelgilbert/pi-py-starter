@@ -1,0 +1,23 @@
+# systemd unit template for running the app on the Raspberry Pi.
+#
+# `${USER}` and `${HOME}` are substituted at install time via `envsubst` —
+# see the README. This avoids hardcoding `pi` / `/home/pi`, since modern
+# Raspberry Pi OS lets you pick any username at first boot.
+#
+# Rename this file (and the ExecStart binary) when you fork the boilerplate.
+
+[Unit]
+Description=Pi CPython app (hello)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=${USER}
+WorkingDirectory=${HOME}/app
+ExecStart=${HOME}/app/.venv/bin/hello
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

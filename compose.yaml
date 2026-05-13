@@ -1,0 +1,34 @@
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+    working_dir: /workspace
+    volumes:
+      - .:/workspace:cached           # source (bind mount)
+      - venv:/opt/venv                # venv kept off the host filesystem
+      - uv-cache:/home/dev/.cache/uv  # uv package cache persists across rebuilds
+    tty: true
+    stdin_open: true
+    # Readiness marker is written by .docker/entrypoint.sh after `uv sync` completes.
+    healthcheck:
+      test: ["CMD", "test", "-f", "/opt/venv/.synced"]
+      interval: 1s
+      timeout: 1s
+      retries: 60
+      start_period: 60s
+
+  # Future: local MQTT broker for testing. Uncomment when you fork for MQTT work.
+  # mqtt:
+  #   image: eclipse-mosquitto:2
+  #   ports:
+  #     - "1883:1883"
+  #   volumes:
+  #     - ./.docker/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+
+volumes:
+  venv:
+  uv-cache:
