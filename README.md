@@ -9,7 +9,7 @@ MQTT / GPIO / hardware-poking projects.
 **Dev environment stays clean. Pi cleanliness doesn't matter as much.**
 
 - On the Mac: zero Python toolchain on the host. Everything lives inside a Docker container.
-  Edit scripts in VS Code, run them via `./dev hello`.
+  Edit scripts in VS Code, run them via `./cpy hello`.
 - On the Pi: install Python, `uv`, and git directly. It's the target box; it's
   supposed to have the runtime. No Docker daemon, no images, no cross-compiles.
 - Reproducibility comes from `uv.lock`: the Pi installs byte-identical deps to
@@ -22,16 +22,16 @@ MQTT / GPIO / hardware-poking projects.
 
 ## Dev loop (on your Mac)
 
-Everything goes through `./dev`:
+Everything goes through `./cpy`:
 
 ```
-./dev hello                 # run the CLI
-./dev shell                 # interactive bash inside the container
-./dev uv add paho-mqtt      # add a dependency (writes pyproject.toml + uv.lock)
-./dev pytest                # run tests
-./dev python -m foo         # arbitrary python
-./dev up / down / logs      # reserved verbs route to docker compose
-./dev help                  # all verbs
+./cpy hello                 # run the CLI
+./cpy shell                 # interactive bash inside the container
+./cpy uv add paho-mqtt      # add a dependency (writes pyproject.toml + uv.lock)
+./cpy pytest                # run tests
+./cpy python -m foo         # arbitrary python
+./cpy up / down / logs      # reserved verbs route to docker compose
+./cpy help                  # all verbs
 ```
 
 Source is bind-mounted, so edits on the Mac take effect immediately inside the
@@ -99,7 +99,7 @@ Three commands after SSH. No images, no registries, no daemons.
 .
 ├── Dockerfile              # dev-only image (CPython + uv + non-root user)
 ├── compose.yaml            # dev service; extend here for a local MQTT broker
-├── dev                     # bash wrapper — your CLI into the container
+├── cpy                     # bash wrapper — your CLI into the container
 ├── pyproject.toml          # project + deps (managed by uv)
 ├── uv.lock                 # pinned deps — source of truth for Pi too
 ├── src/hello/              # package code
@@ -115,7 +115,7 @@ Three commands after SSH. No images, no registries, no daemons.
 - **No MQTT broker in `compose.yaml`.** The boilerplate is intentionally bare.
   A commented-out Mosquitto scaffold is in [`compose.yaml`](compose.yaml) for when
   you fork this.
-- **No tests.** Add `pytest` with `./dev uv add --dev pytest` when you need them.
+- **No tests.** Add `pytest` with `./cpy uv add --dev pytest` when you need them.
 
 ## Forking checklist
 
@@ -125,4 +125,4 @@ When you fork this for the real MQTT project:
 2. Update `[project]` name + `[project.scripts]` in `pyproject.toml`
 3. Rename `deploy/hello.service` and update `ExecStart` + `Description`
 4. Uncomment the `mqtt` service in `compose.yaml` (Mosquitto for local testing)
-5. `./dev uv add paho-mqtt` to add the MQTT client library
+5. `./cpy uv add paho-mqtt` to add the MQTT client library

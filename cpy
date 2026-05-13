@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# ./dev — dockerized dev wrapper.
+# ./cpy — dockerized dev wrapper.
 # Reserved verbs route to `docker compose`; anything else runs inside the
-# dev container via `docker compose exec`. See `./dev help` for full usage.
+# dev container via `docker compose exec`. See `./cpy help` for full usage.
 set -euo pipefail
 
 cd "$(dirname "$0")"
 
 usage() {
   cat <<'EOF'
-Usage: ./dev <command> [args...]
+Usage: ./cpy <command> [args...]
 
 Docker lifecycle:
   up                      start services (detached)
@@ -22,10 +22,10 @@ Inside the dev container:
   <anything else>         run it in the container
 
 Examples:
-  ./dev hello             run the hello CLI (console script)
-  ./dev uv add paho-mqtt  add a dependency
-  ./dev pytest            run tests
-  ./dev python -m foo     arbitrary python
+  ./cpy hello             run the hello CLI (console script)
+  ./cpy uv add paho-mqtt  add a dependency
+  ./cpy pytest            run tests
+  ./cpy python -m foo     arbitrary python
 EOF
 }
 
@@ -33,7 +33,7 @@ EOF
 # so users see the underlying docker call without polluting stdout.
 run() { printf '+ %s\n' "$*" >&2; "$@"; }
 
-# Start the dev service on demand so `./dev <cmd>` works without an explicit `./dev up` first.
+# Start the dev service on demand so `./cpy <cmd>` works without an explicit `./cpy up` first.
 ensure_up() {
   if ! docker compose ps --status running --services 2>/dev/null | grep -qx dev; then
     docker compose up -d --wait dev >/dev/null
