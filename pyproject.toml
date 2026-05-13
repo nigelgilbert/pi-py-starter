@@ -2,7 +2,7 @@
 name = "hello"
 version = "0.1.0"
 description = "Raspberry Pi CPython Docker boilerplate"
-requires-python = ">=3.13"
+requires-python = "==3.11.*"
 dependencies = []
 
 [project.scripts]
@@ -16,7 +16,7 @@ build-backend = "hatchling.build"
 packages = ["src/hello"]
 
 [tool.ruff]
-target-version = "py313"
+target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]

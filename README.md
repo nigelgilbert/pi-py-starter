@@ -18,7 +18,7 @@ MQTT / GPIO / hardware-poking projects.
 ## Requirements
 
 - **Mac (workstation):** Docker Desktop. That is the entire host-side toolchain.
-- **Pi (target):** Python 3.13, git, `uv`, systemd. One-time setup below.
+- **Pi (target):** Python 3.11 (system Python on Pi OS Bookworm), git, `uv`, systemd. One-time setup below.
 
 ## Dev loop (on your Mac)
 
@@ -57,17 +57,20 @@ SSH in once and bootstrap:
 ```bash
 ssh pi@raspberrypi.local
 
-# System deps
+# System deps. build-essential + python3-dev are required for building
+# CPython C extensions on the Pi (this starter targets CPython-level work).
 sudo apt update
-sudo apt install -y python3 python3-venv git gettext-base
+sudo apt install -y python3 python3-venv python3-dev build-essential git gettext-base
 
 # uv (static arm64 binary, ~10MB)
 curl -LsSf https://astral.sh/uv/install.sh | sh
 source ~/.bashrc
 
 # Clone the repo and install deps from the lockfile.
-# Pi OS Bookworm ships Python 3.11; `uv sync` will download a standalone
-# Python 3.13 (per `requires-python` in pyproject.toml) on first run.
+# `pyproject.toml` pins `requires-python = "==3.11.*"` to match Pi OS Bookworm's
+# system Python — so `uv sync` uses /usr/bin/python3 directly. Keeping the ABI
+# aligned with the dev container's 3.11 means compiled C extensions built in
+# the container also load on the Pi.
 git clone https://github.com/YOU/pi-cpy-starter.git ~/app
 cd ~/app
 uv sync --frozen --no-dev

@@ -4,7 +4,7 @@
 # all Python toolchain lives in here. The Pi runs source natively; it does
 # NOT use this image. See README.md ("Deploy") for the Pi side.
 
-FROM python:3.13-slim-bookworm
+FROM python:3.11-slim-bookworm
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -16,8 +16,11 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 # Pinned for reproducibility — bump intentionally.
 COPY --from=ghcr.io/astral-sh/uv:0.11.14 /uv /uvx /usr/local/bin/
 
+# build-essential + python3-dev: needed for compiling CPython C extensions
+# from source (the whole point of this starter — see project_cpython_intent).
 RUN apt-get update \
- && apt-get install -y --no-install-recommends ca-certificates git \
+ && apt-get install -y --no-install-recommends \
+        ca-certificates git build-essential python3-dev \
  && rm -rf /var/lib/apt/lists/*
 
 ARG UID=1000
