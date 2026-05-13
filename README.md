@@ -65,7 +65,9 @@ sudo apt install -y python3 python3-venv git gettext-base
 curl -LsSf https://astral.sh/uv/install.sh | sh
 source ~/.bashrc
 
-# Clone the repo and install deps from the lockfile
+# Clone the repo and install deps from the lockfile.
+# Pi OS Bookworm ships Python 3.11; `uv sync` will download a standalone
+# Python 3.13 (per `requires-python` in pyproject.toml) on first run.
 git clone https://github.com/YOU/pi-cpy-starter.git ~/app
 cd ~/app
 uv sync --frozen --no-dev
