@@ -34,8 +34,9 @@ EOF
 run() { printf '+ %s\n' "$*" >&2; "$@"; }
 
 # Start the dev service on demand so `./py <cmd>` works without an explicit `./py up` first.
+# Gates on container *health* (uv sync --check), not merely "running".
 ensure_up() {
-  if ! docker compose ps --status running --services 2>/dev/null | grep -qx dev; then
+  if [[ "$(docker compose ps dev --format '{{.Health}}' 2>/dev/null)" != "healthy" ]]; then
     docker compose up -d --wait dev >/dev/null
   fi
 }
@@ -45,7 +46,7 @@ shift || true
 
 case "$cmd" in
   help|-h|--help) usage ;;
-  up)             run docker compose up -d "$@" ;;
+  up)             run docker compose up -d --wait "$@" ;;
   down)           run docker compose down   "$@" ;;
   build)          run docker compose build  "$@" ;;
   logs)           run docker compose logs -f "$@" ;;

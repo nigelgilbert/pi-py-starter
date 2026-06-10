@@ -13,13 +13,13 @@ services:
       - uv-cache:/home/dev/.cache/uv  # uv package cache persists across rebuilds
     tty: true
     stdin_open: true
-    # Readiness marker is written by .docker/entrypoint.sh after `uv sync` completes.
+    # Healthy means the venv matches the lockfile — asks uv directly.
     healthcheck:
-      test: ["CMD", "test", "-f", "/opt/venv/.synced"]
-      interval: 1s
-      timeout: 1s
-      retries: 60
-      start_period: 60s
+      test: ["CMD", "uv", "sync", "--check"]
+      start_period: 300s
+      start_interval: 2s   # Compose 2.24+; start_period still covers older engines
+      interval: 30s
+      timeout: 10s
 
   # Future: local MQTT broker for testing. Uncomment when you fork for MQTT work.
   # mqtt:

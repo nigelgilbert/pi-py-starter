@@ -5,7 +5,6 @@ set -euo pipefail
 
 if [[ -f pyproject.toml ]]; then
   uv sync
-  touch /opt/venv/.synced  # readiness marker for the compose healthcheck
 fi
 
 exec "$@"
