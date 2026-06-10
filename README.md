@@ -89,6 +89,7 @@ Three commands after SSH. No images, no registries, no daemons.
 ├── pyproject.toml         # project + deps (managed by uv)
 ├── uv.lock                # pinned deps, shared with the Pi
 ├── src/hello/             # package code
+├── tests/                 # pytest suite
 ├── .docker/entrypoint.sh  # auto `uv sync` on container start
 ├── .devcontainer/         # VS Code attach config
 └── deploy/hello.service   # systemd unit template for the Pi
