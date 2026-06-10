@@ -4,7 +4,7 @@
 # all Python toolchain lives in here. The Pi runs source natively; it does
 # NOT use this image. See README.md ("Deploy") for the Pi side.
 
-FROM python:3.11-slim-bookworm
+FROM python:3.13-slim-trixie
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \

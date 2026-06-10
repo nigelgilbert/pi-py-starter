@@ -8,7 +8,7 @@ on the Pi. Fork it for MQTT / GPIO / hardware-poking projects.
 **The Mac stays clean. The Pi runs without a container.**
 
 - **Mac:** zero Python on the host. Everything happens inside Docker, via `./py`.
-- **Pi:** Python 3.11, `uv`, git, and systemd installed directly.
+- **Pi:** Python 3.13, `uv`, git, and systemd installed directly.
 - **Reproducibility:** [`uv.lock`](uv.lock) is the contract. The Pi installs
   the same resolved deps the dev container did.
 
@@ -54,8 +54,11 @@ sudo apt install -y python3 python3-venv python3-dev build-essential git gettext
 # uv (static arm64 binary, ~10MB)
 curl -LsSf https://astral.sh/uv/install.sh | sh && source ~/.bashrc
 
-# Clone + install. pyproject.toml pins Python ==3.11.*, same minor as the
-# dev container, so C extensions built there also load here.
+# Clone + install. pyproject.toml pins Python ==3.13.* — the same minor that
+# the dev container runs and that Raspberry Pi OS (trixie) ships as python3.
+# The pin makes both machines resolve the identical uv.lock and run the same
+# interpreter behavior. (Built artifacts don't travel between machines; each
+# side compiles its own C extensions.)
 git clone https://github.com/YOU/pi-py-starter.git ~/app
 cd ~/app && uv sync --frozen --no-dev
 
@@ -81,7 +84,7 @@ Three commands after SSH. No images, no registries, no daemons.
 ```
 .
 ├── py                     # bash wrapper for the container
-├── Dockerfile             # dev-only image (Python 3.11 + uv + non-root user)
+├── Dockerfile             # dev-only image (Python 3.13 + uv + non-root user)
 ├── compose.yaml           # dev service; extend for a local MQTT broker
 ├── pyproject.toml         # project + deps (managed by uv)
 ├── uv.lock                # pinned deps, shared with the Pi
