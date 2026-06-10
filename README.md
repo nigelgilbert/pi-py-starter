@@ -92,6 +92,7 @@ Three commands after SSH. No images, no registries, no daemons.
 ├── tests/                 # pytest suite
 ├── .docker/entrypoint.sh  # auto `uv sync` on container start
 ├── .devcontainer/         # VS Code attach config
+├── docs/hardware.md       # radio + AIOC hardware notes
 └── deploy/hello.service   # systemd unit template for the Pi
 ```
 

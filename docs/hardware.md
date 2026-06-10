@@ -1,4 +1,4 @@
-# hardware list
+# Hardware list
 
 - Baofeng UV-5R
 - NA6 AIOC - Ham Radio All-in-one-Cable
@@ -7,9 +7,8 @@
 
 - Raspberry Pi 3 Model B+
 
->  dual-band wireless LAN, 1GB DRAM
+> dual-band wireless LAN, 1GB DRAM
 
-
-# hardware vision
+# Hardware vision
 
 - pi -> USB-C -> NA6 AIOC -> Radio
