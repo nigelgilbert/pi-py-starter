@@ -1,8 +1,16 @@
 # systemd unit template for running the app on the Raspberry Pi.
 #
-# `${USER}` and `${HOME}` are substituted at install time via `envsubst` —
-# see the README. This avoids hardcoding `pi` / `/home/pi`, since modern
-# Raspberry Pi OS lets you pick any username at first boot.
+# `${USER}` and `${HOME}` are substituted at install time via
+# `envsubst '$USER $HOME'` — see the README. This avoids hardcoding
+# `pi` / `/home/pi`, since modern Raspberry Pi OS lets you pick any
+# username at first boot.
+#
+# WARNING: the install command only substitutes the variables in that
+# allowlist. If you add a new variable meant to be substituted, you must
+# also add it to the `envsubst '$USER $HOME'` allowlist in the documented
+# install commands. Variables NOT in the allowlist (e.g. systemd's
+# `$MAINPID`) pass through verbatim — which is exactly what you want for
+# anything systemd itself should expand.
 #
 # Rename this file (and the ExecStart binary) when you fork the boilerplate.
 

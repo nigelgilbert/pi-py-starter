@@ -62,8 +62,8 @@ curl -LsSf https://astral.sh/uv/install.sh | sh && source ~/.bashrc
 git clone https://github.com/YOU/pi-py-starter.git ~/app
 cd ~/app && uv sync --frozen --no-dev
 
-# Install the systemd unit (substitutes $USER / $HOME into the template).
-envsubst < deploy/hello.service | sudo tee /etc/systemd/system/hello.service >/dev/null
+# Install the systemd unit (substitutes only $USER / $HOME into the template).
+envsubst '$USER $HOME' < deploy/hello.service | sudo tee /etc/systemd/system/hello.service >/dev/null
 sudo systemctl daemon-reload
 sudo systemctl enable --now hello
 ```
