@@ -20,12 +20,12 @@ Everything routes through [`./py`](py):
 
 ```
 ./py hello                 # run the CLI
-./py shell                 # bash in the container
 ./py uv add paho-mqtt      # add a dep (writes pyproject.toml + uv.lock)
 ./py pytest                # tests
-./py up / down / logs      # docker compose verbs
-./py help                  # all verbs
 ```
+
+Run `./py help` for the full verb list (compose lifecycle, `shell`, and
+arbitrary in-container commands).
 
 Source is bind-mounted, so VS Code edits take effect instantly. The venv lives
 in a named Docker volume and never touches your filesystem. `uv.lock` is
